@@ -21,8 +21,12 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public Account findById(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			Account account = accountDao.findById(id);
+			return account;
+		} catch (Exception e) {
+			throw e; 
+		}
 	}
 
 	@Override
