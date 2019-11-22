@@ -44,8 +44,12 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public List<Account> findAll() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			List<Account> accounts = accountDao.findAll();
+			return accounts;
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	@Override

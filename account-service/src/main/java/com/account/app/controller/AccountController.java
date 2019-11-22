@@ -1,5 +1,8 @@
 package com.account.app.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +25,13 @@ public class AccountController {
 	public ResponseEntity<Account> findById(@PathVariable("id") Long id) {
 		Account account = new Account();
 		try {
+			account = accountService.findById(id);
 			if (!StringUtils.isEmpty(account.getId())) {
-				account = accountService.findById(id);
 				return new ResponseEntity<Account>(account, HttpStatus.OK);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			return new ResponseEntity<Account>(account, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<Account>(account, HttpStatus.NOT_FOUND);
 
@@ -46,6 +50,23 @@ public class AccountController {
 			return new ResponseEntity<Account>(account, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<Account>(account, HttpStatus.BAD_REQUEST);
+	}
+	
+	@RequestMapping(value = "/accounts", method = RequestMethod.GET)
+	public ResponseEntity<List<Account>> findAllAccounts() {
+		List<Account> account = new ArrayList<Account>();
+		try {
+			account = accountService.findAll();
+			if (account.size() > 0) {
+
+				return new ResponseEntity<List<Account>>(account, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<List<Account>>(account, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<List<Account>>(account, HttpStatus.NO_CONTENT);
+
 	}
 
 }
