@@ -13,7 +13,7 @@ public interface AccountDao {
 
 	public List<Account> findAll() throws Exception;
 
-	public Account updateById(Long id, Account account) throws Exception;
+	public int updateById(Long id, Account account) throws Exception;
 
 	public int deleteById(Long id) throws Exception;
 

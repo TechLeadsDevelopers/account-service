@@ -68,5 +68,21 @@ public class AccountController {
 		return new ResponseEntity<List<Account>>(account, HttpStatus.NO_CONTENT);
 
 	}
+	
+	@RequestMapping(value = "/accounts/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Account> findById(@PathVariable("id") Long id, @RequestBody 
+			Account account) {
+		try {
+			account = accountService.updateById(id, account);
+			if (!StringUtils.isEmpty(account.getId())) {
+				return new ResponseEntity<Account>(account, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<Account>(account, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<Account>(account, HttpStatus.NOT_FOUND);
+
+	}
 
 }

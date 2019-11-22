@@ -117,9 +117,18 @@ public class AccountDaoImpl implements AccountDao {
 	}
 
 	@Override
-	public Account updateById(Long id, Account account) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public int updateById(Long id, Account account) throws Exception {
+		try {
+			SqlParameterSource paramSource = new MapSqlParameterSource().addValue("name", account.getName())
+					.addValue("description", account.getDescription()).addValue("status", account.getStatus())
+					.addValue("lastmodified", new Timestamp(new Date().getTime()))
+					.addValue("updateduser", account.getUpdatedUser()).addValue("id", id);
+
+			int count = NamedParameterJdbcTemplate.update(DBQueries.UPDTE_ACCNT_BY_ID, paramSource);
+			return count;
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	@Override

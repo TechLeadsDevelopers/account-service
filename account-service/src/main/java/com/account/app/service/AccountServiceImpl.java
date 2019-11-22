@@ -54,8 +54,15 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public Account updateById(Long id, Account account) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			int count = accountDao.updateById(id, account);
+			if(count>0) {
+				return findById(id);
+			}
+			return new Account();
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	@Override
