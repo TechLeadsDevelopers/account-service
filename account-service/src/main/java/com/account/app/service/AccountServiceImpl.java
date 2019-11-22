@@ -15,8 +15,15 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public Account save(Account account) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			int count = accountDao.save(account);
+			if (count > 0) {
+				return findById(account.getId());
+			}
+			return new Account();
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	@Override
@@ -25,7 +32,7 @@ public class AccountServiceImpl implements AccountService {
 			Account account = accountDao.findById(id);
 			return account;
 		} catch (Exception e) {
-			throw e; 
+			throw e;
 		}
 	}
 

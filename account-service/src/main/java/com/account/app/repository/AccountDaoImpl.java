@@ -2,6 +2,8 @@ package com.account.app.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,8 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.account.app.commons.DBQueries;
@@ -19,11 +23,27 @@ import com.account.app.model.Account;
 public class AccountDaoImpl implements AccountDao {
 	@Autowired
 	private NamedParameterJdbcTemplate NamedParameterJdbcTemplate;
-
+	
 	@Override
 	public int save(Account account) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		try {
+			SqlParameterSource paramSource = new MapSqlParameterSource().addValue("name", account.getName())
+					.addValue("description", account.getDescription()).addValue("status", account.getStatus())
+					.addValue("createdate", new Timestamp(new Date().getTime()))
+					.addValue("createduser", account.getCreatedUser())
+					.addValue("lastmodified", new Timestamp(new Date().getTime()))
+					.addValue("updateduser", account.getUpdatedUser());
+
+		
+			KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+			int count = NamedParameterJdbcTemplate.update(DBQueries.INSERT_ACCNT, paramSource, generatedKeyHolder,
+					new String[] { "ID" });
+			long generatedId = generatedKeyHolder.getKey().longValue();
+			account.setId(generatedId);
+			return count;
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	@Override
