@@ -2,6 +2,7 @@ package com.account.app.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,7 +52,7 @@ public class AccountController {
 		}
 		return new ResponseEntity<Account>(account, HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@RequestMapping(value = "/accounts", method = RequestMethod.GET)
 	public ResponseEntity<List<Account>> findAllAccounts() {
 		List<Account> account = new ArrayList<Account>();
@@ -68,10 +69,9 @@ public class AccountController {
 		return new ResponseEntity<List<Account>>(account, HttpStatus.NO_CONTENT);
 
 	}
-	
+
 	@RequestMapping(value = "/accounts/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Account> findById(@PathVariable("id") Long id, @RequestBody 
-			Account account) {
+	public ResponseEntity<Account> findById(@PathVariable("id") Long id, @RequestBody Account account) {
 		try {
 			account = accountService.updateById(id, account);
 			if (!StringUtils.isEmpty(account.getId())) {
@@ -83,6 +83,18 @@ public class AccountController {
 		}
 		return new ResponseEntity<Account>(account, HttpStatus.NOT_FOUND);
 
+	}
+
+	@RequestMapping(value = "/accounts/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<List<Account>> deleteAccountById(@PathVariable("id") Long id) {
+		List<Account> account = new ArrayList<Account>();
+		try {
+			account = accountService.deleteById(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<List<Account>>(account, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<List<Account>>(account, HttpStatus.OK);
 	}
 
 }

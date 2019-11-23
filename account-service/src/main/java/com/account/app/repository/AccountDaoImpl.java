@@ -133,8 +133,14 @@ public class AccountDaoImpl implements AccountDao {
 
 	@Override
 	public int deleteById(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		try {
+			SqlParameterSource paramSource = new MapSqlParameterSource().addValue("id", id);
+
+			int count = NamedParameterJdbcTemplate.update(DBQueries.DELTE_ACCNT_BY_ID, paramSource);
+			return count;
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 }

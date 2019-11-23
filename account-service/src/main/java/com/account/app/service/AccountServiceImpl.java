@@ -1,5 +1,6 @@
 package com.account.app.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,7 @@ public class AccountServiceImpl implements AccountService {
 	public Account updateById(Long id, Account account) throws Exception {
 		try {
 			int count = accountDao.updateById(id, account);
-			if(count>0) {
+			if (count > 0) {
 				return findById(id);
 			}
 			return new Account();
@@ -67,8 +68,12 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public List<Account> deleteById(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			int count = accountDao.deleteById(id);
+			return findAll();
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 }
